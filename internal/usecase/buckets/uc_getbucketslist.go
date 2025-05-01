@@ -6,21 +6,21 @@ import (
 )
 
 type GetBucketsListRequest struct {
-	Limit  int32
-	Offset int32
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
 }
 
 type GetBucketsListResult struct {
-	items []GetBucketsListResultItem
+	items []GetBucketsListResultItem `json:"items"`
 }
 
 type GetBucketsListResultItem struct {
-	ID          int32
-	Name        string
-	Description string
+	ID          int32  `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
-func (uc *bucketsUsecase) GetBucketsList(ctx context.Context, request GetBucketsListRequest) (*GetBucketsListResult, error) {
+func (uc *Usecase) GetBucketsList(ctx context.Context, request GetBucketsListRequest) (*GetBucketsListResult, error) {
 	sql := `
 		select id, name, description
 		from buckets

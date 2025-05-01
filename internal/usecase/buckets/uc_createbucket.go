@@ -3,15 +3,15 @@ package buckets
 import "context"
 
 type CreateBucketRequest struct {
-	Name        string
-	Description string
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 type CreateBucketResult struct {
-	ID int32
+	ID int32 `json:"id"`
 }
 
-func (uc *bucketsUsecase) CreateBucket(
+func (uc *Usecase) CreateBucket(
 	ctx context.Context,
 	request CreateBucketRequest) (result *CreateBucketResult, err error) {
 	sql := `

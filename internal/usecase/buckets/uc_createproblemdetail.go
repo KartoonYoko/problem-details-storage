@@ -3,19 +3,19 @@ package buckets
 import "context"
 
 type CreateProblemDetailRequest struct {
-	Description string
-	Type        string
-	Title       string
-	Status      int8
-	Detail      string
-	Instance    string
+	Description string `json:"description"`
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Status      int8   `json:"status"`
+	Detail      string `json:"detail"`
+	Instance    string `json:"instance"`
 }
 
 type CreateProblemDetailResult struct {
-	ID int32
+	ID int32 `json:"id"`
 }
 
-func (uc *bucketsUsecase) CreateProblemDetail(
+func (uc *Usecase) CreateProblemDetail(
 	ctx context.Context,
 	request CreateProblemDetailRequest) (
 	*CreateProblemDetailResult,

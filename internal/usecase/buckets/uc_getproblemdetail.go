@@ -3,20 +3,20 @@ package buckets
 import "context"
 
 type GetBucketProblemDetailByTypeRequest struct {
-	Type string
+	Type string `json:"type"`
 }
 
 type GetBucketProblemDetailByTypeResult struct {
-	ID          int32
-	Description string
-	Type        string
-	Title       string
-	Status      int8
-	Detail      string
-	Instance    string
+	ID          int32  `json:"id"`
+	Description string `json:"description"`
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Status      int8   `json:"status"`
+	Detail      string `json:"detail"`
+	Instance    string `json:"instance"`
 }
 
-func (uc *bucketsUsecase) GetBucketProblemDetailByType(
+func (uc *Usecase) GetBucketProblemDetailByType(
 	ctx context.Context,
 	request GetBucketProblemDetailByTypeRequest) (
 	*GetBucketProblemDetailByTypeResult,

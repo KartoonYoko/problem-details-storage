@@ -6,26 +6,26 @@ import (
 )
 
 type GetBucketProblemDetailsRequest struct {
-	BucketID int32
-	Offset   int32
-	Limit    int32
+	BucketID int32 `json:"bucketId"`
+	Offset   int32 `json:"offset"`
+	Limit    int32 `json:"limit"`
 }
 
 type GetBucketProblemDetailsResult struct {
-	items []GetBucketProblemDetailsResultItem
+	items []GetBucketProblemDetailsResultItem `json:"items"`
 }
 
 type GetBucketProblemDetailsResultItem struct {
-	ID          int32
-	Description string
-	Type        string
-	Title       string
-	Status      int8
-	Detail      string
-	Instance    string
+	ID          int32  `json:"id"`
+	Description string `json:"description"`
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Status      int8   `json:"status"`
+	Detail      string `json:"detail"`
+	Instance    string `json:"instance"`
 }
 
-func (uc *bucketsUsecase) GetBucketProblemDetails(
+func (uc *Usecase) GetBucketProblemDetails(
 	ctx context.Context,
 	request GetBucketProblemDetailsRequest) (
 	response *GetBucketProblemDetailsResult,

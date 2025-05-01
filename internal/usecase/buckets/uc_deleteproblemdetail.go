@@ -3,10 +3,10 @@ package buckets
 import "context"
 
 type DeleteProblemDetailRequest struct {
-	ID int32
+	ID int32 `json:"id"`
 }
 
-func (uc *bucketsUsecase) DeleteProblemDetail(
+func (uc *Usecase) DeleteProblemDetail(
 	ctx context.Context,
 	request DeleteProblemDetailRequest) error {
 	sql := `delete from problem_details where id = $1`

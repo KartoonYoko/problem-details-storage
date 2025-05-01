@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/KartoonYoko/problem-details-storage/internal/logger"
+	"github.com/KartoonYoko/problem-details-storage/internal/usecase/buckets"
 	"github.com/go-chi/chi/v5"
 	"log"
 	"net/http"
@@ -18,11 +19,14 @@ type Controller struct {
 	config Config
 
 	router *chi.Mux
+
+	usecase *buckets.Usecase
 }
 
-func New(config Config) *Controller {
+func New(config Config, usecase *buckets.Usecase) *Controller {
 	c := new(Controller)
 	c.config = config
+	c.usecase = usecase
 
 	router := chi.NewRouter()
 
@@ -34,13 +38,13 @@ func New(config Config) *Controller {
 
 	apiRouter := chi.NewRouter()
 	router.Mount("/api/", apiRouter)
-	apiRouter.Post("/bucket", handlePOSTBucket)
-	apiRouter.Get("/buckets", handleGETBuckets)
-	apiRouter.Get("/buckets/{bucketID}/problem-details", handleGETBucketProblemDetails)
-	apiRouter.Get("/buckets/{bucketID}/problem-detail/{problemDetailType}", handleGETBucketProblemDetailByType)
-	apiRouter.Post("/buckets/{bucketID}/problem-detail", handlePOSTBucketProblemDetail)
-	apiRouter.Put("/buckets/{bucketID}/problem-detail/{problemDetailID}", handlePUTBucketProblemDetail)
-	apiRouter.Delete("/buckets/{bucketID}/problem-detail/{problemDetailID}", handleDELETEBucketProblemDetail)
+	apiRouter.Post("/bucket", c.handlePOSTBucket)
+	apiRouter.Get("/buckets", c.handleGETBuckets)
+	apiRouter.Get("/buckets/{bucketID}/problem-details", c.handleGETBucketProblemDetails)
+	apiRouter.Get("/buckets/{bucketID}/problem-detail/{problemDetailType}", c.handleGETBucketProblemDetailByType)
+	apiRouter.Post("/buckets/{bucketID}/problem-detail", c.handlePOSTBucketProblemDetail)
+	apiRouter.Put("/buckets/{bucketID}/problem-detail/{problemDetailID}", c.handlePUTBucketProblemDetail)
+	apiRouter.Delete("/buckets/{bucketID}/problem-detail/{problemDetailID}", c.handleDELETEBucketProblemDetail)
 
 	c.router = router
 
