@@ -1,0 +1,23 @@
+services:
+  problem-details-storage:
+    image: postgres:17-alpine
+    ports:
+      - "11000:5432"
+    environment:
+      - "POSTGRES_DB=problem_details_storage_db"
+      - "POSTGRES_USER=problem_details_storage"
+      - "POSTGRES_PASSWORD=problem_details_storage"
+    volumes:
+      - ./deployments/init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U problem_details_storage -d problem_details_storage_db"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+  observability:
+    image: grafana/otel-lgtm
+    ports:
+      - "4318:4318"
+      - "4317:4317"
+      - "3000:3000"

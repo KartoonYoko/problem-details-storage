@@ -1,0 +1,57 @@
+package http_server
+
+import (
+	"github.com/KartoonYoko/problem-details-storage/internal/logger"
+	"go.uber.org/zap"
+	"net/http"
+)
+
+type (
+	// берём структуру для хранения сведений об ответе
+	responseData struct {
+		status int
+		size   int
+	}
+
+	// добавляем реализацию http.ResponseWriter
+	loggingResponseWriter struct {
+		http.ResponseWriter // встраиваем оригинальный http.ResponseWriter
+		responseData        *responseData
+	}
+)
+
+// Write пишет данные в тело, попутно записывая информацию о размере
+func (r *loggingResponseWriter) Write(b []byte) (int, error) {
+	// записываем ответ, используя оригинальный http.ResponseWriter
+	size, err := r.ResponseWriter.Write(b)
+	r.responseData.size += size // захватываем размер
+	return size, err
+}
+
+// WriteHeader отправляет ответ с указанным статусным кодом
+func (r *loggingResponseWriter) WriteHeader(statusCode int) {
+	// записываем код статуса, используя оригинальный http.ResponseWriter
+	r.ResponseWriter.WriteHeader(statusCode)
+	r.responseData.status = statusCode // захватываем код статуса
+}
+
+func middlewareLogResponseInfo(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		responseData := &responseData{
+			status: 200,
+			size:   0,
+		}
+
+		lw := loggingResponseWriter{
+			ResponseWriter: w, // встраиваем оригинальный http.ResponseWriter
+			responseData:   responseData,
+		}
+		next.ServeHTTP(&lw, r)
+
+		logger.Log.Info(
+			"response info",
+			zap.Int("status_code", responseData.status),
+			zap.Int("size", responseData.size),
+		)
+	})
+}

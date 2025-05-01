@@ -1,0 +1,19 @@
+
+<div class="input-group mb-3">
+    <input #searchInput type="text" class="form-control mb-2" placeholder="Поиск..." (input)="search(searchInput.value)">
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div *ngFor="let item of filteredBucketsList" class="mb-2">
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <span class="h4">{{item.name}}</span>
+        </mat-card-header>
+        <mat-card-content>{{item.description}}</mat-card-content>
+        <mat-card-footer>
+            <div class="pb-2 pe-2 d-flex justify-content-end">
+                <button mat-raised-button>Открыть</button>
+            </div>
+        </mat-card-footer>
+    </mat-card>
+</div>
